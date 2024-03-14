@@ -2,16 +2,10 @@ function createTreeElement(item) {
   const element = document.createElement("div");
   element.textContent = item.name;
   element.classList.add(item.type);
-  //   element.onclick = function (isButtonClick) {
-  //     if (
-  //       !isButtonClick ||
-  //       window.confirm(`Are you sure you want to remove ${item.name}?`)
-  //     ) {
-  //       if (this.parentNode) {
-  //         this.parentNode.removeChild(this);
-  //       }
-  //     }
-  //   };
+
+  // Create buttons container
+  const buttonsContainer = document.createElement("div");
+  buttonsContainer.classList.add("btn-container");
 
   // Create buttons
   if (item.type === "folder") {
@@ -19,19 +13,19 @@ function createTreeElement(item) {
     createFileBtn.textContent = "Create File";
     createFileBtn.classList.add("btn", "btn-primary", "btn-sm", "me-1");
     createFileBtn.onclick = () => createFile(item);
-    element.appendChild(createFileBtn);
+    buttonsContainer.appendChild(createFileBtn);
 
     const createFolderBtn = document.createElement("button");
     createFolderBtn.textContent = "Create Folder";
     createFolderBtn.classList.add("btn", "btn-success", "btn-sm", "me-1");
     createFolderBtn.onclick = () => createFolder(item);
-    element.appendChild(createFolderBtn);
+    buttonsContainer.appendChild(createFolderBtn);
 
     const renameBtn = document.createElement("button");
     renameBtn.textContent = "Rename";
     renameBtn.classList.add("btn", "btn-warning", "btn-sm", "me-1");
     renameBtn.onclick = () => renameItem(item);
-    element.appendChild(renameBtn);
+    buttonsContainer.appendChild(renameBtn);
   }
 
   if (item.type === "file") {
@@ -39,8 +33,11 @@ function createTreeElement(item) {
     renameBtn.textContent = "Rename";
     renameBtn.classList.add("btn", "btn-warning", "btn-sm", "me-1");
     renameBtn.onclick = () => renameItem(item);
-    element.appendChild(renameBtn);
+    buttonsContainer.appendChild(renameBtn);
   }
+
+  // Append buttons container to element
+  element.appendChild(buttonsContainer);
 
   // Add click event listener to remove the item
   function removeItem() {
