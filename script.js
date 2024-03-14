@@ -40,19 +40,10 @@ function createTreeElement(item) {
   element.appendChild(buttonsContainer);
 
   // Add click event listener to remove the item
-  function removeItem() {
-    if (window.confirm(`Are you sure you want to remove ${item.name}?`)) {
-      if (element.parentNode) {
-        element.parentNode.removeChild(element);
-      }
-    }
-  }
-
-  // Add click event listener to remove the item
   element.addEventListener("click", (event) => {
     event.stopPropagation(); // Prevent event bubbling
     if (event.target.tagName !== "BUTTON") {
-      removeItem();
+      removeItem(item, element);
     }
   });
 
@@ -68,6 +59,16 @@ function createTreeElement(item) {
 }
 
 // Rest of the functions and setup remains the same...
+
+// Add click event listener to remove the item
+function removeItem(item, element) {
+  if (window.confirm(`Are you sure you want to remove ${item.name}?`)) {
+    if (element.parentFolder) {
+      element.parentFolder.removeChild(element, item);
+      updateFolderTree();
+    }
+  }
+}
 
 function createFile(parentFolder) {
   const fileName = prompt("Enter the file name:");
@@ -108,19 +109,6 @@ function renameItem(item) {
     updateFolderTree();
   }
 }
-
-// function removeItem(item) {
-//   const confirmation = window.confirm(
-//     `Are you sure you want to remove ${item.name}?`
-//   );
-//   if (confirmation) {
-//     const index = item.parent.children.indexOf(item);
-//     if (index > -1) {
-//       item.parent.children.splice(index, 1);
-//       updateFolderTree();
-//     }
-//   }
-// }
 
 function updateFolderTree() {
   const folderTree = document.getElementById("folderTree");
