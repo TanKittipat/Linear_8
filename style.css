@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Athiti:wght@200;300;400;500;600;700&display=swap");
+
+* {
+  font-family: "Athiti", sans-serif;
+}
+
+.folder,
+.file {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.folder::before,
+.file::before {
+  content: "";
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin-right: 5px;
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.folder::before {
+  background-image: url("folder-solid.svg");
+}
+
+.file::before {
+  background-image: url("file-solid.svg");
+}
+
+.btn-container {
+  padding-bottom: 1.25rem;
+}
+
+.container {
+  overflow-y: auto;
+}

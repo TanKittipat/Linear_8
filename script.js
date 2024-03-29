@@ -1,3 +1,23 @@
+const folderStructure = {
+  name: "Root",
+  type: "folder",
+  children: [
+    {
+      name: "Folder 1",
+      type: "folder",
+      children: [
+        { name: "File 1.txt", type: "file" },
+        { name: "File 2.txt", type: "file" },
+      ],
+    },
+    {
+      name: "Folder 2",
+      type: "folder",
+      children: [{ name: "File 3.txt", type: "file" }],
+    },
+  ],
+};
+
 function createTreeElement(item) {
   const element = document.createElement("div");
   element.textContent = item.name;
@@ -12,19 +32,28 @@ function createTreeElement(item) {
     const createFileBtn = document.createElement("button");
     createFileBtn.textContent = "Create File";
     createFileBtn.classList.add("btn", "btn-primary", "btn-sm", "me-1");
-    createFileBtn.onclick = () => createFile(item);
+    createFileBtn.onclick = (event) => {
+      event.preventDefault(); // Prevent the default button behavior
+      createFile(item);
+    };
     buttonsContainer.appendChild(createFileBtn);
 
     const createFolderBtn = document.createElement("button");
     createFolderBtn.textContent = "Create Folder";
     createFolderBtn.classList.add("btn", "btn-success", "btn-sm", "me-1");
-    createFolderBtn.onclick = () => createFolder(item);
+    createFolderBtn.onclick = (event) => {
+      event.preventDefault(); // Prevent the default button behavior
+      createFolder(item);
+    };
     buttonsContainer.appendChild(createFolderBtn);
 
     const renameBtn = document.createElement("button");
     renameBtn.textContent = "Rename";
     renameBtn.classList.add("btn", "btn-warning", "btn-sm", "me-1");
-    renameBtn.onclick = () => renameItem(item);
+    renameBtn.onclick = (event) => {
+      event.preventDefault(); // Prevent the default button behavior
+      renameItem(item);
+    };
     buttonsContainer.appendChild(renameBtn);
   }
 
@@ -32,42 +61,37 @@ function createTreeElement(item) {
     const renameBtn = document.createElement("button");
     renameBtn.textContent = "Rename";
     renameBtn.classList.add("btn", "btn-warning", "btn-sm", "me-1");
-    renameBtn.onclick = () => renameItem(item);
+    renameBtn.onclick = (event) => {
+      event.preventDefault(); // Prevent the default button behavior
+      renameItem(item);
+    };
     buttonsContainer.appendChild(renameBtn);
   }
 
   // Append buttons container to element
   element.appendChild(buttonsContainer);
 
-  // Add click event listener to remove the item
-  element.addEventListener("click", (event) => {
-    event.stopPropagation(); // Prevent event bubbling
-    if (event.target.tagName !== "BUTTON") {
-      removeItem(item, element);
-    }
-  });
-
-  // Recursively create child elements
-  if (item.children) {
+  if (item.type === "folder" && item.children) {
     item.children.forEach((child) => {
       const childElement = createTreeElement(child);
       element.appendChild(childElement);
     });
   }
 
+  // Add click event listener to remove the item
+  element.addEventListener("click", (event) => {
+    event.stopPropagation(); // Prevent event bubbling
+    if (event.target.tagName !== "BUTTON") {
+      removeElement(element);
+    }
+  });
+
   return element;
 }
 
-// Rest of the functions and setup remains the same...
-
-// Add click event listener to remove the item
-function removeItem(item, element) {
-  if (window.confirm(`Are you sure you want to remove ${item.name}?`)) {
-    if (element.parentFolder) {
-      element.parentFolder.removeChild(element, item);
-      updateFolderTree();
-    }
-  }
+function removeElement(item) {
+  const parentElement = item.parentElement;
+  parentElement.removeChild(item);
 }
 
 function createFile(parentFolder) {
@@ -118,27 +142,6 @@ function updateFolderTree() {
   const treeElement = createTreeElement(folderStructure);
   folderTree.appendChild(treeElement);
 }
-
-// Initial setup
-const folderStructure = {
-  name: "Root",
-  type: "folder",
-  children: [
-    {
-      name: "Folder 1",
-      type: "folder",
-      children: [
-        { name: "File 1.txt", type: "file" },
-        { name: "File 2.txt", type: "file" },
-      ],
-    },
-    {
-      name: "Folder 2",
-      type: "folder",
-      children: [{ name: "File 3.txt", type: "file" }],
-    },
-  ],
-};
 
 const folderTree = document.getElementById("folderTree");
 const treeElement = createTreeElement(folderStructure);
